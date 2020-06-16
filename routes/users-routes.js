@@ -7,11 +7,23 @@ const router = express.Router();
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
+router.post('/forgotPassword', authController.forgotPassword);
+router.patch('/resetPassword/:token', authController.resetPassword);
 
-// Get all users , create a new one
+router.patch('/updateMyPassword/', authController.protect, authController.updatePassword);
+
+router.patch('/updateMe', authController.protect, usersController.updateMe);
+router.delete('/deleteMe', authController.protect, usersController.deleteMe);
+
+// Get all users , create a new user
+
 router
   .route('/')
-  .get(authController.protect, usersController.getAllUsers)
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    usersController.getAllUsers
+  )
   .post(usersController.createUser);
 
 // Update, delete and get a user by id
