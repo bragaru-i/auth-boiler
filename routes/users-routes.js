@@ -9,7 +9,10 @@ router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 
 // Get all users , create a new one
-router.route('/').get(usersController.getAllUsers).post(usersController.createUser);
+router
+  .route('/')
+  .get(authController.protect, usersController.getAllUsers)
+  .post(usersController.createUser);
 
 // Update, delete and get a user by id
 
